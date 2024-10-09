@@ -1,0 +1,94 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* styles/globals.css */
+html, body, #__next {
+  height: 100%;
+  margin: 0;
+}
+
+/* .carousel-container {
+  overflow: hidden;
+  width: 100%;
+  z-index: 1;
+  position: relative;
+}
+
+.carousel {
+  display: flex;
+  animation: scroll 20s linear infinite;
+  white-space: nowrap;
+}
+
+.fixed-carousel {
+  position: fixed;
+  top: 60px;
+  left: 0;
+  width: 100%;
+  z-index: 1;
+}
+
+.logo {
+  flex: 0 0 25%;
+  padding: 10px;
+  box-sizing: border-box;
+  display: inline-block;
+  background-color: beige;
+}
+
+.logo img {
+  height: 25px;
+  width: 25px;
+} */
+
+/* Custom styles for Slick Carousel */
+.slick-list {margin: 0 -15px;}
+.slick-slide>div {padding: 0 15px;}
+
+/* Optionally adjust the height of cards to ensure uniformity */
+.card {
+  height: 100%; /* Ensure cards take the full height of the container */
+}
+.carousel-container {
+  position: relative;
+  width: 100%; /* Adjust this as necessary for your layout */
+}
+
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-100%);
+    /* Move the logos to the left */
+  }
+}
+
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+

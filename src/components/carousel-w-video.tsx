@@ -18,6 +18,25 @@ interface CustomArrowProps {
   onClick: () => void;
 }
 
+const EmbedVideo: React.FC<{ src: string; className?: string }> = ({ src, className }) => {
+  return (
+    <div
+      dangerouslySetInnerHTML={{
+        __html: `
+          <video
+            loop
+            muted
+            autoplay
+            playsinline
+            src="${src}"
+            class="${className || ''}"
+          />
+        `,
+      }}
+    />
+  );
+};
+
 const CarouselWithVideo: React.FC = () => {
   // Sample data for the cards
   const cardData: CardData[] = [
@@ -46,7 +65,7 @@ const CarouselWithVideo: React.FC = () => {
   // Custom arrow component
   const CustomArrow: React.FC<CustomArrowProps> = ({ direction, onClick }) => (
     <div
-      className={`absolute top-1/2 transform  -translate-y-1/2 z-10 bg-white rounded-full shadow-md p-2 cursor-pointer text-black ease-in-out ${direction === 'left' ? 'left-2' : 'right-2'} hover:scale-125`}
+      className={`absolute top-1/2 transform -translate-y-1/2 z-10 bg-white rounded-full shadow-md p-2 cursor-pointer text-black ease-in-out ${direction === 'left' ? 'left-2' : 'right-2'} hover:scale-125`}
       onClick={onClick}
     >
       {direction === 'left' ? '<' : '>'}
@@ -87,27 +106,21 @@ const CarouselWithVideo: React.FC = () => {
   return (
     <div className="relative w-full">
       {/* Video Background */}
-      <video 
-        autoPlay 
-        loop 
-        muted 
-        className="absolute top-0 left-0 w-full h-full object-cover -z-10" // Set to fill the container
-        style={{ top: '-50px', height: 'calc(100% + 100px)' }} // Adjust height and position
-      >
-        <source src="/videos/banner.mp4" type="video/mp4" /> {/* Update with your video path */}
-        Your browser does not support the video tag.
-      </video>
+      <EmbedVideo
+        src="/videos/banner.mp4" // Update with your video path
+        className="absolute top-0 left-0 w-full h-full object-cover -z-10"
+      />
 
       {/* Carousel Container */}
-      <div className="carousel-container my-8 px-4 relative w-5/6 mx-auto h-96  overflow-hidden">
+      <div className="carousel-container my-8 px-4 relative w-5/6 mx-auto h-96 overflow-hidden">
         <Slider {...settings}>
           {cardData.map((card, index) => (
             <div className="card" key={index}>
               <div className="p-4 bg-white bg-opacity-30 shadow-lg rounded-lg transition-transform duration-300 hover:scale-105 h-[300px] flex flex-col justify-between">
-                <img 
-                  src={card.image || placeholderImage} 
-                  alt={card.title} 
-                  className="card-image h-32 w-full object-cover rounded-t-lg" 
+                <img
+                  src={card.image || placeholderImage}
+                  alt={card.title}
+                  className="card-image h-32 w-full object-cover rounded-t-lg"
                 />
                 <h3 className="card-title text-xl font-semibold mt-2 text-black">{card.title}</h3>
                 <p className="card-description text-black mt-1">{card.description}</p>

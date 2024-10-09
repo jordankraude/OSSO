@@ -18,7 +18,7 @@ interface CustomArrowProps {
   onClick: () => void;
 }
 
-const EmbedVideo: React.FC<{ src: string; className?: string }> = ({ src, className }) => {
+const EmbedVideo: React.FC<{ src: string; className?: string; style?: React.CSSProperties }> = ({ src, className, style }) => {
   return (
     <div
       dangerouslySetInnerHTML={{
@@ -30,6 +30,7 @@ const EmbedVideo: React.FC<{ src: string; className?: string }> = ({ src, classN
             playsinline
             src="${src}"
             class="${className || ''}"
+            style="${style ? Object.entries(style).map(([key, value]) => `${key}: ${value};`).join(' ') : ''}"
           />
         `,
       }}
@@ -108,7 +109,8 @@ const CarouselWithVideo: React.FC = () => {
       {/* Video Background */}
       <EmbedVideo
         src="/videos/banner.mp4" // Update with your video path
-        className="absolute top-0 left-0 w-full h-full object-cover -z-10"
+        className="absolute top-0 left-0 w-full h-full object-cover -z-10" // Fill the container
+        style={{ top: '-50px', height: 'calc(100% + 100px)' }} // Adjust height and position
       />
 
       {/* Carousel Container */}

@@ -68,6 +68,8 @@ html, body, #__next {
 .card {
   height: 100%; /* Ensure cards take the full height of the container */
 }
+
+.video {height: 120%;}
 .carousel-container {
   position: relative;
   width: 100%; /* Adjust this as necessary for your layout */

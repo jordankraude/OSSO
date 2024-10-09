@@ -1,10 +1,13 @@
-import Image from "next/image";
-import { StickyCarousel } from "@/components/carousel";
+// import Image from "next/image";
+// import { StickyCarousel } from "@/components/carousel";
 import { CarouselWithVideo } from "@/components/carousel-w-video";
+import Header from "@/components/header";
+// import HeaderWithVideo from "@/components/header-w-video";
 
 export default function Home() {
   return (
     <div className="">
+      <Header></Header>
       {/* <StickyCarousel></StickyCarousel> */}
       <CarouselWithVideo></CarouselWithVideo>
       

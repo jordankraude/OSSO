@@ -33,10 +33,10 @@ const Footer: React.FC = () => {
       {/* Legal Information */}
       <div className="mt-6 text-sm text-gray-200 text-center">
         <p>
-          OSSO is an independent 501(c)(3) nonprofit organization aligned with the principles, teachings, and values of The Church of Jesus Christ of Latter-day Saints; however, OSSO is not affiliated with or endorsed by the Church. While primarily a member-created organization, volunteer opportunities are open to people of all faiths who are willing to follow OSSO's code of conduct.
+          OSSO is an independent 501(c)(3) nonprofit organization aligned with the principles, teachings, and values of The Church of Jesus Christ of Latter-day Saints; however, OSSO is not affiliated with or endorsed by the Church. While primarily a member-created organization, volunteer opportunities are open to people of all faiths who are willing to follow OSSO&apos;s code of conduct.
         </p>
         <p>
-          Photos on this website are used with permission and follow Ecuador’s privacy policies for children in orphanages.
+          Photos on this website are used with permission and follow Ecuador&apos;s privacy policies for children in orphanages.
         </p>
       </div>
     </footer>

@@ -1,4 +1,5 @@
 import React from "react";
+import Image from "next/image";
 
 export default function Header() {
   return (
@@ -7,7 +8,13 @@ export default function Header() {
         {/* Logo */}
         <div className="flex items-center">
           <a href="/" className="text-2xl font-bold">
-            <img src="/images/OSSO-Logo.png" alt="Logo" className="h-10 w-auto" />
+          <Image 
+                  src="/images/icon.png" 
+                  alt="logo" 
+                  width={60} 
+                  height={60} 
+                />
+
           </a>
         </div>
 

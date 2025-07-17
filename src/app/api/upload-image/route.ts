@@ -63,7 +63,6 @@ export async function POST(request: NextRequest) {
   const res = {
     statusCode: 200,
     statusMessage: '',
-    setHeader: (_name: string, _value: string) => {},
     end: (data: string) => {
       console.log(data);
     },

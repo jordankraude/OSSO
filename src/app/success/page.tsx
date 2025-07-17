@@ -15,7 +15,7 @@ const Success = async () => {
           Your donation was successful! We truly appreciate your support.
         </p>
         <p className="text-md text-gray-600">
-          Together, we're making a difference in the community.
+          Together, we are making a difference in the community.
         </p>
       </main>
       <Footer />

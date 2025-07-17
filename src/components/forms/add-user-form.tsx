@@ -1,21 +1,21 @@
-// UserForm.tsx
 import React, { useEffect } from 'react';
 
-interface UserFormProps {
-  initialData: {
-    email: string;
-    firstName: string;
-    lastName: string;
-    isVolunteer: boolean;
-    isAdmin: boolean;
+interface UserFormData {
+  email: string;
+  firstName: string;
+  lastName: string;
+  isVolunteer: boolean;
+  isAdmin: boolean;
+}
 
-  };
-  onSubmit: (data: any) => void;
+interface UserFormProps {
+  initialData: UserFormData;
+  onSubmit: (data: UserFormData) => void;
   onCancel: () => void;
 }
 
 const UserForm: React.FC<UserFormProps> = ({ initialData, onSubmit, onCancel }) => {
-  const [formData, setFormData] = React.useState(initialData);
+  const [formData, setFormData] = React.useState<UserFormData>(initialData);
 
   useEffect(() => {
     setFormData(initialData);
@@ -23,10 +23,11 @@ const UserForm: React.FC<UserFormProps> = ({ initialData, onSubmit, onCancel }) 
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
-    setFormData({
-      ...formData,
+
+    setFormData((prev) => ({
+      ...prev,
       [name]: type === 'checkbox' ? checked : value,
-    });
+    }));
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -94,8 +95,19 @@ const UserForm: React.FC<UserFormProps> = ({ initialData, onSubmit, onCancel }) 
         </label>
       </div>
       <div className="flex justify-end space-x-2">
-        <button type="button" onClick={onCancel} className="bg-gray-300 rounded-md px-4 py-2">Cancel</button>
-        <button type="submit" className="bg-blue-600 text-white rounded-md px-4 py-2">Submit</button>
+        <button
+          type="button"
+          onClick={onCancel}
+          className="bg-gray-300 rounded-md px-4 py-2"
+        >
+          Cancel
+        </button>
+        <button
+          type="submit"
+          className="bg-blue-600 text-white rounded-md px-4 py-2"
+        >
+          Submit
+        </button>
       </div>
     </form>
   );

@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { FiArrowLeft, FiArrowUp, FiArrowDown, FiArrowRight, FiPlus, FiTrash } from 'react-icons/fi';
+import { FiArrowLeft, FiArrowUp, FiArrowDown, FiArrowRight, FiPlus } from 'react-icons/fi';
 import LoadingSpinner from '../admin/admin-spinner';
 
 type Paragraph = {
@@ -18,6 +18,8 @@ type Paragraph = {
     subheader: string;
     paragraphs: Paragraph[];
   };
+
+
   
 
 const EditBlogModal: React.FC<{
@@ -43,11 +45,11 @@ const EditBlogModal: React.FC<{
           // Map the MongoDB IDs (if available) into state
           setTitle(data.title || '');
           setSections(
-            data.sections?.map((section: any) => ({
+            data.sections?.map((section: Section) => ({
               id: section.id, // local id for managing sections
               mongoId: section.id, // MongoDB ID for the section
               subheader: section.subheader,
-              paragraphs: section.paragraphs.map((paragraph: any) => ({
+              paragraphs: section.paragraphs.map((paragraph: Paragraph) => ({
                 id: paragraph.id, // local id for managing paragraphs
                 mongoId: paragraph.id, // MongoDB ID for the paragraph
                 content: paragraph.content,
@@ -70,13 +72,13 @@ const EditBlogModal: React.FC<{
   }, [blogId]);
   
 
-  let counter = 1; // Starting point for the increment
+  // let counter = 1; // Starting point for the increment
 
-  const generateIncrementingId = (): string => {
-    counter = counter + 1
-    let stringId = counter.toString()
-    return stringId;
-  };
+  // const generateIncrementingId = (): string => {
+  //   counter = counter + 1
+  //   let stringId = counter.toString()
+  //   return stringId;
+  // };
 
   function generateNumericObjectId(): number {
     // 1. Generate the 4-byte timestamp (Unix time in seconds)

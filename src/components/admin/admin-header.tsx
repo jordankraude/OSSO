@@ -1,6 +1,6 @@
 import React from "react";
 import { Session } from "next-auth";
-import { FiBell, FiMessageCircle, FiUser } from "react-icons/fi"; // Import icons for notifications and messages
+import { FiBell, FiUser } from "react-icons/fi"; // Import icons for notifications and messages
 
 interface AdminHeaderProps {
   session: Session | null;

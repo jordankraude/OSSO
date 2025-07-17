@@ -8,7 +8,7 @@ declare module "next-auth" {
     firstname: string | null; // Allow for null
     lastname: string | null;  // Allow for null
     image: string | null;     // Allow for null
-    isAdmin?: boolean;       // Optional admin status
+    isAdmin: boolean;       // Optional admin status
   }
 
   interface Session {

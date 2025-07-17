@@ -1,7 +1,7 @@
 // components/admin/AdminLayout.tsx
 import React from 'react';
 import Sidebar from './sidebar';
-import AdminHeader from './admin-header-wrapper';
+// import AdminHeader from './admin-header-wrapper';
 import AdminHeaderWithSession from './admin-header-wrapper';
 
 const AdminLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {

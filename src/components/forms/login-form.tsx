@@ -9,8 +9,8 @@ const LoginForm: React.FC = () => {
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
-  const [isChangingPassword, setIsChangingPassword] = useState<boolean>(false);
-  const [newPassword, setNewPassword] = useState<string>("");
+  // const [isChangingPassword, setIsChangingPassword] = useState<boolean>(false);
+  // const [newPassword, setNewPassword] = useState<string>("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -33,27 +33,27 @@ const LoginForm: React.FC = () => {
     }
   };
 
-  const handleChangePassword = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError(null);
-    setSuccess(null);
+  // const handleChangePassword = async (e: React.FormEvent) => {
+  //   e.preventDefault();
+  //   setError(null);
+  //   setSuccess(null);
 
-    // Send a request to the API to change the password
-    const response = await fetch('/api/auth/reset-password', { // Update with your API endpoint
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, newPassword }),
-    });
+  //   // Send a request to the API to change the password
+  //   const response = await fetch('/api/auth/reset-password', { // Update with your API endpoint
+  //     method: 'POST',
+  //     headers: { 'Content-Type': 'application/json' },
+  //     body: JSON.stringify({ email, newPassword }),
+  //   });
 
-    if (response.ok) {
-      setSuccess("Password changed successfully!");
-      setNewPassword(""); // Clear the input
-      setIsChangingPassword(false); // Hide the change password form
-    } else {
-      const errorData = await response.json();
-      setError(errorData.error || "Failed to change password.");
-    }
-  };
+  //   if (response.ok) {
+  //     setSuccess("Password changed successfully!");
+  //     setNewPassword(""); // Clear the input
+  //     setIsChangingPassword(false); // Hide the change password form
+  //   } else {
+  //     const errorData = await response.json();
+  //     setError(errorData.error || "Failed to change password.");
+  //   }
+  // };
 
   return (
     <div>

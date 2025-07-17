@@ -6,49 +6,49 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
+interface BlogParagraph {
+  content: string;
+  imagePosition: string;
+  image?: string | null;
+}
+
+interface BlogSection {
+  subheader: string;
+  paragraphs: BlogParagraph[];
+}
+
 export async function GET() {
   try {
-    // Fetch all blog posts from the database
     const blogPosts = await prisma.blogPost.findMany();
-
-    // Return the blog posts in the response using NextResponse
     return NextResponse.json(blogPosts);
-  } catch (error) {
-    // Handle any errors and return a proper error response
+  } catch {
     return NextResponse.json({ error: 'Failed to fetch blog posts' }, { status: 500 });
   }
 }
-
 
 export async function POST(req: Request) {
   try {
     const formData = await req.formData();
 
     const title = formData.get('title') as string;
-    const sections = JSON.parse(formData.get('sections') as string);
+    const sections: BlogSection[] = JSON.parse(formData.get('sections') as string);
 
-    // Handle image uploads and map images to paragraphs
     await Promise.all(
-      Array.from(formData.entries()).map(async ([key, value]) => {
-        if (key.startsWith('images[')) {
-          const file = value as File;
+      Array.from(formData.entries()).map(async ([key, value]: [string, FormDataEntryValue]) => {
+        if (key.startsWith('images[') && value instanceof File) {
+          const file = value;
 
-          // Extract sectionId and paragraphId from the key (e.g., images[1-1])
           const match = key.match(/\[(\d+)-(\d+)\]/);
-          if (!match) return; // Skip invalid keys
+          if (!match) return;
 
-          const [, sectionId, paragraphId] = match;
+          const [, sectionIdStr, paragraphIdStr] = match;
+          const sectionIndex = parseInt(sectionIdStr, 10) - 1;
+          const paragraphIndex = parseInt(paragraphIdStr, 10) - 1;
 
-          // Upload the image
           const arrayBuffer = await file.arrayBuffer();
           const buffer = Buffer.from(arrayBuffer);
-
           const filePath = path.join(process.cwd(), 'public', 'uploads', file.name);
           await fs.writeFile(filePath, buffer);
-
-          // Assign the image path to the correct paragraph
-          const sectionIndex = parseInt(sectionId, 10) - 1; // Convert 1-based index to 0-based
-          const paragraphIndex = parseInt(paragraphId, 10) - 1;
 
           if (
             sections[sectionIndex] &&
@@ -62,17 +62,16 @@ export async function POST(req: Request) {
 
     console.log('Sections after image assignment:', JSON.stringify(sections, null, 2));
 
-    // Save the blog post to the database using Prisma
     const blogPost = await prisma.blogPost.create({
       data: {
         title,
         sections: {
-          create: sections.map((section: any) => ({
+          create: sections.map((section) => ({
             subheader: section.subheader,
             paragraphs: {
-              create: section.paragraphs.map((paragraph: any) => ({
+              create: section.paragraphs.map((paragraph) => ({
                 content: paragraph.content,
-                imagePosition: paragraph.imagePosition.toUpperCase(), // Ensure it matches the enum
+                imagePosition: paragraph.imagePosition.toUpperCase(),
                 image: paragraph.image || null,
               })),
             },
@@ -83,7 +82,7 @@ export async function POST(req: Request) {
 
     console.log('Data saved to Prisma:', blogPost);
 
-    revalidatePath('/'); // Optional path revalidation
+    revalidatePath('/');
     return NextResponse.json({ status: 'success', data: blogPost });
   } catch (e: unknown) {
     if (e instanceof Error) {

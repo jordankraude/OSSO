@@ -1,24 +1,40 @@
 'use client';
 import React, { useState, useEffect } from 'react';
-import { FiEdit, FiTrash2, FiSearch, FiPlus } from 'react-icons/fi';
+import { FiEdit, FiTrash2, FiPlus } from 'react-icons/fi';
 import UserForm from '@/components/forms/add-user-form';
 import Spinner from '@/components/admin/admin-spinner'; // Import the Spinner component
+import { profiles } from '@prisma/client';
+
+interface ProfileFormData {
+  email: string;
+  firstName?: string;
+  lastName?: string;
+  image?: string;
+  subscribedToNewsletter?: boolean;
+  isAdmin?: boolean;
+  isVolunteer?: boolean;
+}
+
 
 const UsersPage: React.FC = () => {
-  const [users, setUsers] = useState<any[]>([]);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [currentPage, setCurrentPage] = useState(1);
-  const [loading, setLoading] = useState(true);
+  const [users, setUsers] = useState<profiles[]>([]);
+  const [searchTerm, setSearchTerm] = useState<string>('');
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const [isFormOpen, setIsFormOpen] = useState(false);
-  const [currentUser, setCurrentUser] = useState<any>(null);
+  const [isFormOpen, setIsFormOpen] = useState<boolean>(false);
+  const [currentUser, setCurrentUser] = useState<profiles | null>(null);
+
+  const [userToDelete, setUserToDelete] = useState<profiles | null>(null); // Track user to delete
 
   const usersPerPage = 10;
 
   const fetchUsers = async () => {
     setLoading(true);
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/admin/profiles?page=${currentPage}&limit=${usersPerPage}`);
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/admin/profiles?page=${currentPage}&limit=${usersPerPage}`
+      );
       if (!res.ok) throw new Error('Failed to fetch users');
       const data = await res.json();
       setUsers(data.users || []);
@@ -43,15 +59,13 @@ const UsersPage: React.FC = () => {
     setIsFormOpen(true);
   };
 
-  const handleEditUser = (user: any) => {
+  const handleEditUser = (user: profiles) => {
     setCurrentUser(user);
     setIsFormOpen(true);
   };
 
-  const [userToDelete, setUserToDelete] = useState<any | null>(null); // State to track the user to delete
-
-  const confirmDeleteUser = (user: any) => {
-    console.log("User to delete:", user); // Log user for debugging
+  const confirmDeleteUser = (user: profiles) => {
+    console.log('User to delete:', user); // Debug
     setUserToDelete(user);
   };
   
@@ -85,7 +99,7 @@ const UsersPage: React.FC = () => {
     setCurrentPage(pageNumber);
   };
 
-  const handleFormSubmit = async (data: any) => {
+  const handleFormSubmit = async (data: ProfileFormData) => {
     setLoading(true);
     try {
       const response = currentUser

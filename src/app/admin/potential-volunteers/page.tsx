@@ -1,9 +1,10 @@
 'use client'
 import React, { useState, useEffect } from 'react';
 import LoadingSpinner from '@/components/admin/admin-spinner'; // Import the spinner component
+import { potential_volunteers } from '@prisma/client';
 
 const AdminPage: React.FC = () => {
-  const [potentialVolunteers, setPotentialVolunteers] = useState<any[]>([]);  // Initializing as an empty array
+  const [potentialVolunteers, setPotentialVolunteers] = useState<potential_volunteers[]>([]);  // Initializing as an empty array
   const [filter, setFilter] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(true);
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -107,11 +108,11 @@ const AdminPage: React.FC = () => {
     setCurrentPage(page);
   };
 
-  // Convert date to readable format
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleString(); // You can customize the format as needed
-  };
+    // Convert date to readable format
+  function formatDate(date: Date | string) {
+    const d = typeof date === 'string' ? new Date(date) : date;
+    return d.toLocaleDateString(); // or any formatting you want
+  }
 
   return (
     <div>

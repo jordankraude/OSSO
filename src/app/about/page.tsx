@@ -1,4 +1,3 @@
-// src/app/about/page.tsx
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth"; // Adjust the import based on your file structure
 import HeaderWithSession from "@/components/header-w-session";
@@ -33,7 +32,12 @@ export default async function AboutPage() {
           </p>
 
           <p className="text-lg">
-            After adopting two healthy little girls and a young boy with cerebral palsy, Rex and his wife, Melodie, wanted to do more to help children without parents. They visited and gave assistance to orphanages in several countries, but when visiting a girls’ orphanage in Cuenca, Ecuador, Rex had the feeling that somehow these girls were different. “It was like they were my own children,” Rex describes. The Heads returned to Ecuador several times as a family and later, with a group of volunteers from Ricks College (now known as Brigham Young University - Idaho).
+            After adopting two healthy little girls and a young boy with cerebral palsy, Rex and
+            his wife, Melodie, wanted to do more to help children without parents. They visited
+            and gave assistance to orphanages in several countries, but when visiting a girls&apos;
+            orphanage in Cuenca, Ecuador, Rex had the feeling that somehow these girls were different. 
+            &ldquo;It was like they were my own children,&rdquo; Rex describes. The Heads returned to Ecuador 
+            several times as a family and later, with a group of volunteers from Ricks College (now known as Brigham Young University - Idaho).
           </p>
 
           <p className="text-lg">
@@ -47,7 +51,7 @@ export default async function AboutPage() {
               Since our founding in 1999, we have helped support 30 different orphanages. We have sent over 5,000 volunteers internationally to give nearly 1.5 million hours of face-to-face service in orphanages and millions of dollars in financial support. Most of our support has been to orphanages in Ecuador, but we have also supported orphanages in Thailand, China, Uganda, Vietnam, Peru, and Mexico.
             </p>
             <p className="text-lg">
-              When you volunteer with OSSO or become a donor, you change a life—often a child's but always your own.
+              When you volunteer with OSSO or become a donor, you change a life&mdash;often a child&apos;s but always your own.
             </p>
           </div>
 
@@ -55,7 +59,7 @@ export default async function AboutPage() {
           <div className="space-y-4">
             <h2 className="text-3xl font-bold text-gray-800">Our Mission</h2>
             <p className="text-lg">
-              OSSO's mission is to provide love and care to children deprived of parental care and to change the lives of the volunteers who love and care for them.
+              OSSO&apos;s mission is to provide love and care to children deprived of parental care and to change the lives of the volunteers who love and care for them.
             </p>
           </div>
 
@@ -63,13 +67,13 @@ export default async function AboutPage() {
           <div className="space-y-4">
             <h2 className="text-3xl font-bold text-gray-800">Our Core Beliefs</h2>
             <ul className="list-disc pl-6 space-y-2 text-lg">
-              <li>OSSO believes children are the world's most valuable assets and their future should be our top priority.</li>
+              <li>OSSO believes children are the world&apos;s most valuable assets and their future should be our top priority.</li>
               <li>The greatest treasure is to love and be loved.</li>
               <li>
                 Caring for children is a sacred right, privilege, and responsibility that rests first with families, then communities, and governments. When these institutions cannot or will not care for them, it becomes the responsibility of good people and organizations everywhere to do so.
               </li>
               <li>
-                OSSO’s volunteers, donors, and the children we serve are family. You never graduate from the OSSO family. Your role may change, but you still belong.
+                OSSO&rsquo;s volunteers, donors, and the children we serve are family. You never graduate from the OSSO family. Your role may change, but you still belong.
               </li>
             </ul>
           </div>

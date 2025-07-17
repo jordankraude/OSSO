@@ -1,72 +1,42 @@
-import { NextRequest } from "next/server";
-import { createRouter } from "next-connect";
-import formidable from "formidable";
-import { IncomingMessage, ServerResponse } from "http";
-import { File as FormidableFile, Files, Fields } from "formidable";
+import { NextRequest, NextResponse } from 'next/server';
+import formidable from 'formidable';
+
+export const config = {
+  api: {
+    bodyParser: false, // disable Next.js built-in body parsing for file upload
+  },
+};
 
 const uploadDir = './public/uploads';
 
-// --- Define proper types ---
-interface IncomingMessageWithFiles extends IncomingMessage {
-  files?: Files;
-  fields?: Fields;
-}
-
-// --- Router setup ---
-const router = createRouter<IncomingMessageWithFiles, ServerResponse>();
-
-// --- Middleware ---
-const uploadMiddleware = (
-  req: IncomingMessageWithFiles,
-  res: ServerResponse,
-  next: () => void
-) => {
-  const form = new formidable.IncomingForm({
+export async function POST(request: NextRequest) {
+  const form = formidable({
     uploadDir,
     keepExtensions: true,
     filename: (_originalName, _ext, part) =>
-      `${part.originalFilename?.split('.')[0] ?? 'file'}-${Date.now()}.${part.mimetype?.split('/')[1] ?? 'dat'}`
+      `${part.originalFilename?.split('.')[0] ?? 'file'}-${Date.now()}.${part.mimetype?.split('/')[1] ?? 'dat'}`,
   });
 
-  form.parse(req, (err, fields, files) => {
-    if (err) {
-      res.statusCode = 500;
-      res.end(JSON.stringify({ error: "File upload failed", details: err }));
-    } else {
-      req.files = files;
-      req.fields = fields;
-      next();
-    }
+  // Promisify formidable parse
+  const data = await new Promise<{ fields: formidable.Fields; files: formidable.Files }>((resolve, reject) => {
+    form.parse(request as unknown as any, (err, fields, files) => {
+      if (err) reject(err);
+      else resolve({ fields, files });
+    });
   });
-};
 
-router.use(uploadMiddleware);
+  // Access files (assuming input named "file")
+  const file = data.files.file;
 
-// --- POST handler ---
-router.post((req: IncomingMessageWithFiles, res: ServerResponse) => {
-  const files = req.files;
-
-  if (files && files.file && Array.isArray(files.file)) {
-    const filePath = (files.file[0] as FormidableFile).filepath;
-    res.statusCode = 200;
-    res.end(JSON.stringify({ message: "File uploaded successfully", filePath }));
-  } else {
-    res.statusCode = 400;
-    res.end(JSON.stringify({ error: "No file uploaded" }));
+  if (!file) {
+    return NextResponse.json({ error: 'No file uploaded' }, { status: 400 });
   }
-});
 
-// --- API route function ---
-export async function POST(request: NextRequest) {
-  const req = request as unknown as IncomingMessageWithFiles;
+  // If multiple files, get the first
+  const uploadedFile = Array.isArray(file) ? file[0] : file;
 
-  const res = {
-    statusCode: 200,
-    statusMessage: '',
-    end: (data: string) => {
-      console.log(data);
-    },
-  } as ServerResponse;
-
-  return router.run(req, res);
+  return NextResponse.json({
+    message: 'File uploaded successfully',
+    filePath: uploadedFile.filepath,
+  });
 }

@@ -52,19 +52,23 @@ const authOptions: NextAuthOptions = {
   },
   callbacks: {
     async jwt({ token, user }) {
+    
       if (user) {
         token.firstname = user.firstname; // Will be string or null
         token.lastname = user.lastname;   // Will be string or null
         token.image = user.image;         // Will be string or null
         token.isAdmin = user.isAdmin || false; // Include isAdmin in the token
       }
+      console.log("JWT CALLBACK - TOKEN:", token);
       return token;
     },
     async session({ session, token }) {
+      console.log("SESSION CALLBACK - TOKEN:", token);
       session.user.firstname = (token.firstname as string | null) || null; 
       session.user.lastname = (token.lastname as string | null) || null;   
       session.user.image = (token.image as string | null) || null; 
       session.user.isAdmin = (token.isAdmin as boolean) || false; // Include isAdmin in the session
+      console.log("SESSION CALLBACK - SESSION:", session); 
       return session;
     },
   },

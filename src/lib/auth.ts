@@ -14,18 +14,24 @@ export const authOptions: NextAuthOptions = {
         return {
           id: profile.id,
           email: profile.email,
-          firstname: profile.given_name || null, 
-          lastname: profile.family_name || null,  
+          firstname: profile.given_name || null,
+          lastname: profile.family_name || null,
           image: profile.picture || null,
-          // isAdmin should not be set here; it will be fetched later
+          isAdmin: false,  // Provide a default here to satisfy TS
         };
       },
+
     }),
     // Add other providers as needed
   ],
   callbacks: {
     async jwt({ token, user }) {
       // If user is logged in, fetch isAdmin from the database
+
+      if (!user.email) {
+  // handle missing email (throw error or return early)
+        throw new Error("Email is required");
+      }
       if (user) {
         // Fetch user details from the database
         const dbUser = await prisma.profiles.findUnique({

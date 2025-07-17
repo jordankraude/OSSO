@@ -1,0 +1,125 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model potential_volunteers {
+  id                  String  @id @default(auto()) @map("_id") @db.ObjectId
+  duration            String
+  email               String
+  familyMembers       String
+  name                String
+  createdAt           DateTime @default(now())
+  travelingWithFamily Boolean
+
+  @@map("potential-volunteers")
+}
+
+model profiles {
+  id                     String  @id @default(auto()) @map("_id") @db.ObjectId
+  email                  String   @unique
+  passwordHash           String
+  firstName              String? // Make it optional
+  lastName               String? // Make it optional
+  image                  String?
+  subscribedToNewsletter Boolean? @default(false) // Make it optional
+  isAdmin               Boolean   @default(false)
+  createdAt             DateTime  @default(now())
+  isVolunteer           Boolean   @default(false)
+  lastLogin             DateTime? // Optional
+  
+}
+
+model messages { 
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  name      String   // Name of the person
+  email     String   @unique               // Email address
+  phone     String?  // Optional phone number
+  message   String   // The message sent
+  createdAt DateTime @default(now())       // Timestamp for when the message was sent
+  isRead    Boolean  @default(false)       // Tracks if the message has been read
+  isArchived Boolean @default(false)       // Tracks if the message has been archived
+  isStarred Boolean  @default(false)       // Marks important messages
+  needsResponse Boolean @default(true)     // Tracks if the message needs a response
+
+   @@map("messages")
+}
+
+enum ApplicationType {
+  ShortTerm
+  LongTerm
+  SemesterAbroad
+  Family
+  Corporate
+  VolunteerDirector
+}
+
+model applications {
+  id                String          @id @default(auto()) @map("_id") @db.ObjectId
+  firstName        String
+  lastName         String
+  phone            String?
+  email            String
+  applicationType  ApplicationType
+  volunteerLength   String
+  volunteerStartDate DateTime
+  buddyPass        Boolean
+  createdAt        DateTime @default(now())
+
+  @@map("applications")
+}
+
+model VerificationCode {
+  id        String      @id @default(auto()) @map("_id") @db.ObjectId
+  email     String   @unique
+  code      String
+  createdAt DateTime @default(now())
+  expiresAt DateTime
+
+  @@map("verification-code")
+}
+
+model BlogPost {
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  title     String
+  description String?
+  sections  Section[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  @@map("blog-posts")
+}
+
+model Section {
+  id         String      @id @default(auto()) @map("_id") @db.ObjectId
+  subheader  String?
+  blogPostId String      @db.ObjectId
+  blogPost   BlogPost    @relation(fields: [blogPostId], references: [id])
+  paragraphs Paragraph[]
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+  @@map("blog-sections")
+}
+
+model Paragraph {
+  id           String        @id @default(auto()) @map("_id") @db.ObjectId
+  content      String?
+  sectionId    String        @db.ObjectId
+  section      Section       @relation(fields: [sectionId], references: [id])
+  image        String?       // URL or file path for the image
+  imagePosition ImagePosition @default(NULL)
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  @@map("blog-paragraphs")
+}
+
+enum ImagePosition {
+  LEFT
+  RIGHT
+  ABOVE
+  BELOW
+  NULL
+}

@@ -3,7 +3,7 @@ import Link from 'next/link'; // Ensure you have the Link component imported for
 
 const Footer: React.FC = () => {
   return (
-    <footer className="bg-blue-800 text-white py-8">
+    <footer className="bg-[#3454D1] text-white py-8 w-full">
       <div className="max-w-screen-xl mx-auto flex flex-col md:flex-row justify-between px-4">
         {/* Left Side */}
         <div className="mb-6 md:mb-0">

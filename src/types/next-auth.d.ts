@@ -15,3 +15,6 @@ declare module "next-auth" {
     user: User;
   }
 }
+
+
+    // "postinstall": "cp ./types/bcryptjs.d.ts ./node_modules/bcryptjs/"

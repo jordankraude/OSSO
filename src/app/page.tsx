@@ -7,7 +7,7 @@ import Footer from '@/components/footer';
 
 const Home = async () => {
   const session = await getServerSession(authOptions); // Fetch the session data
-
+  console.log(session)
 
   return (
     <div className='w-full'>

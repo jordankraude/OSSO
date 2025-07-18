@@ -25,32 +25,33 @@ export const authOptions: NextAuthOptions = {
     // Add other providers as needed
   ],
   callbacks: {
-    async jwt({ token, user }) {
-      // If user is logged in, fetch isAdmin from the database
 
-      if (!user.email) {
-  // handle missing email (throw error or return early)
-        throw new Error("Email is required");
-      }
-      if (user) {
-        // Fetch user details from the database
-        const dbUser = await prisma.profiles.findUnique({
-          where: { email: user.email },
-          select: { isAdmin: true }, // Select only isAdmin field
-        });
+async jwt({ token, user }) {
+  if (user) {
+    if (!user.email) {
+      throw new Error("Email is required");
+    }
 
-        // Ensure the token has the expected shape
-        token.firstname = user.firstname || null; 
-        token.lastname = user.lastname || null;   
-        token.image = user.image || null;        
-        token.isAdmin = dbUser?.isAdmin || false; // Use fetched isAdmin value
-      }
-      return token as JWT & { // Extend the JWT type
-        firstname: string | null;
-        lastname: string | null;
-        image: string | null;
-        isAdmin: boolean; // Add isAdmin to token type
-      };
+    // Fetch user details from DB only on initial sign-in
+    const dbUser = await prisma.profiles.findUnique({
+      where: { email: user.email },
+      select: { isAdmin: true },
+    });
+
+    token.firstname = user.firstname || null;
+    token.lastname = user.lastname || null;
+    token.image = user.image || null;
+    token.isAdmin = dbUser?.isAdmin || false;
+  }
+  // On subsequent calls, user is undefined and we just return the existing token
+  return token as JWT & {
+    firstname: string | null;
+    lastname: string | null;
+    image: string | null;
+    isAdmin: boolean;
+  };
+
+
     },
     async session({ session, token }) {
       // Ensure that token properties are correctly assigned
